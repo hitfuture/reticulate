@@ -244,9 +244,7 @@ r_to_py.data.frame <- function(x, convert = FALSE) {
   pdf
 
 }
-#' @name py_to_r.pandas.core.frame.DataFrame
-#' @title py_to_r.pandas.core.frame.DataFrame
-#' @param x A Python object.
+
 #' @export
 py_to_r.pandas.core.frame.DataFrame <- function(x) {
   disable_conversion_scope(x)
