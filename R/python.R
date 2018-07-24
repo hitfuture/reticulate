@@ -1,3 +1,39 @@
+#' Translate a function names
+#' @title add_functions_by_alias
+#' @description Add functions when a module name is aliased
+#' @import R.methodsS3
+#' @param module Module name
+#' @param as Alias for module name
+#'
+
+add_functions_by_alias <- function(module, as = NULL){
+
+  if( !is.null(as)){
+    fnames  <- unclass(lsf.str(envir = asNamespace("reticulate"), all = TRUE))
+    embeded_functions <- fnames[grepl(paste0(".*",module,".*"),fnames)]
+    pattern <- paste0("^(.*)(",module,")(.*)$")
+    replace <-  paste0("\\1",as,"\\3")
+    lapply(embeded_functions,function(fname){
+
+      new_name <- gsub(pattern,replace,fname)
+      method_lst <- unlist(strsplit(fname,"\\.") )
+      method_name <- method_lst[1]
+      class_name <- paste0(method_lst[-1],collapse = ".")
+      method <- R.methodsS3::getMethodS3(method_name,class_name)
+      new_class_name  <- paste0(unlist(strsplit(new_name,"\\.") )[-1],collapse = ".")
+      # print(method)
+      #  new_method <- R.methodsS3::setMethodS3(method_name,new_class_name,method,appendVarArgs=FALSE,export=TRUE)
+      f <- sys.function(-1)
+      ns <- environment(f)
+      assign(new_name, method, envir = ns, inherits = FALSE)
+      #assignInMyNamespace(new_name,method)
+
+
+    })
+  }
+
+}
+
 
 #' Import a Python module
 #'
@@ -34,7 +70,9 @@ import <- function(module, as = NULL, convert = TRUE, delay_load = FALSE) {
   if (!is.null(as)) {
     register_class_filter(function(classes) {
       sub(paste0("^", module), as, classes)
+
     })
+    add_functions_by_alias(module,as)
   }
 
   # resolve delay load
