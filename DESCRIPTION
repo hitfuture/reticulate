@@ -34,7 +34,8 @@ Imports:
     graphics,
     jsonlite,
     Rcpp (>= 0.12.7),
-    Matrix
+    Matrix,
+    R.methodsS3
 Suggests:
     testthat,
     knitr,

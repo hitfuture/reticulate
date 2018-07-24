@@ -9,4 +9,7 @@ addons:
     packages:
       - python2.7
       - python-numpy
+before_install:
+  - pip install --user numpy
+  - pip install --user pandas
 
