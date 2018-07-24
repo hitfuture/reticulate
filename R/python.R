@@ -2,7 +2,7 @@
 #' @title add_functions_by_alias
 #' @description Add functions when a module name is aliased
 #' @import R.methodsS3
-#' @import utils
+#' @importFrom utils lsf.str
 #' @param module Module name
 #' @param as Alias for module name
 #'

@@ -6,13 +6,8 @@ test_that("Simple Pandas data frames can be roundtripped", {
   pd <- import("pandas")
   py_config()
   before <- iris
-  print(class(before))
   convert <- r_to_py(before)
-  print(class(convert))
-
   after  <- py_to_r(convert)
-  print(class(after))
-
   mapply(function(lhs, rhs) {
     expect_equal(lhs, rhs)
   }, before, after)
