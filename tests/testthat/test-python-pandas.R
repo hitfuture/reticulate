@@ -7,6 +7,7 @@ test_that("Simple Pandas data frames can be roundtripped", {
 
   before <- iris
   after  <- py_to_r(r_to_py(before))
+  expect_is(after,"data.frame")
   mapply(function(lhs, rhs) {
     expect_equal(lhs, rhs)
   }, before, after)
@@ -21,6 +22,8 @@ test_that("Ordered factors are preserved", {
   set.seed(123)
   before <- data.frame(x = ordered(letters, levels = sample(letters)))
   after <- py_to_r(r_to_py(before))
+  expect_is(after,"data.frame")
+
   expect_equal(before, after, check.attributes = FALSE)
 
 })
@@ -59,6 +62,7 @@ test_that("Timestamped arrays in Pandas DataFrames can be roundtripped", {
   before <- pd$DataFrame(data)
 
   converted <- py_to_r(before)
+  expect_is(converted,"data.frame")
 
   after <- r_to_py(converted)
 
@@ -75,6 +79,7 @@ test_that("data.frames with length-one factor columns can be converted", {
   before <- data.frame(x = "hello")
   converted <- r_to_py(before)
   after <- py_to_r(converted)
+  expect_is(after,"data.frame")
 
   expect_equal(before, after, check.attributes = FALSE)
 
