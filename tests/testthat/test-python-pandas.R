@@ -4,10 +4,9 @@ test_that("Simple Pandas data frames can be roundtripped", {
   skip_if_no_pandas()
 
   pd <- import("pandas")
-  py_config()
+
   before <- iris
-  convert <- r_to_py(before)
-  after  <- py_to_r(convert)
+  after  <- py_to_r(r_to_py(before))
   mapply(function(lhs, rhs) {
     expect_equal(lhs, rhs)
   }, before, after)
@@ -20,8 +19,7 @@ test_that("Ordered factors are preserved", {
   pd <- import("pandas")
 
   set.seed(123)
-  before <-
-    data.frame(x = ordered(letters, levels = sample(letters)))
+  before <- data.frame(x = ordered(letters, levels = sample(letters)))
   after <- py_to_r(r_to_py(before))
   expect_equal(before, after, check.attributes = FALSE)
 
@@ -30,9 +28,7 @@ test_that("Ordered factors are preserved", {
 test_that("Generic methods for pandas objects produce correct results", {
   skip_if_no_pandas()
 
-  df <- data.frame(x = c(1, 3),
-                   y = c(4, 4),
-                   z = c(5, 5))
+  df <- data.frame(x = c(1, 3), y = c(4, 4), z = c(5, 5))
   pdf <- r_to_py(df)
 
   expect_equal(length(pdf), length(df))
@@ -107,7 +103,7 @@ test_that("complex names are handled", {
 
   pd <- import("pandas", convert = FALSE)
 
-  d <- dict(col1 = list(1, 2))
+  d <- dict(col1 = list(1,2))
 
   d[tuple("col1", "col2")] <- list(4, 5)
 
